@@ -12,12 +12,18 @@ const App = () => {
     setMessage(`Inserted ${formatMoney(coin)}.`);
   };
 
+  const returnCoins = () => {
+    setBalance(0);
+    setMessage(`Returned: ${formatMoney(balance)}.`);
+  };
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <PaymentSystem
         balance={balance}
         onInsertCoin={insertCoin}
         message={message}
+        onReturnCoins={returnCoins}
       />
     </Container>
   );
