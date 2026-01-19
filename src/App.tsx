@@ -25,13 +25,32 @@ const App = () => {
     setMessage(`Returned: ${formatMoney(balance)}.`);
   };
 
+  const buy = ({ id, name, price }: Omit<IProduct, "quantity">) => {
+    if (balance < price) {
+      setMessage("Insufficient funds!");
+    } else {
+      setProducts((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, quantity: p.quantity - 1 } : p))
+      );
+
+      const change = balance - price;
+      setBalance(0);
+
+      setMessage(
+        `Purchased "${name}".${
+          change ? ` Change: ${formatMoney(change)}.` : ""
+        }`
+      );
+    }
+  };
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Grid container spacing={4}>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <InventoryManager products={products} />
+        <Grid size={{ xs: 12, sm: 8, lg: 9 }}>
+          <InventoryManager products={products} onBuy={buy} />
         </Grid>
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid size={{ xs: 12, sm: 4, lg: 3 }}>
           <PaymentSystem
             balance={balance}
             onInsertCoin={insertCoin}
