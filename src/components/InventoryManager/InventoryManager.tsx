@@ -2,13 +2,19 @@ import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { InventoryManagerProps } from "./InventoryManager.types";
 import Product from "./Product/Product";
 
-const InventoryManager = ({ products, onBuy }: InventoryManagerProps) => (
+const InventoryManager = ({
+  products,
+  onBuy,
+  onAdd,
+}: InventoryManagerProps) => (
   <Paper sx={{ p: 3, bgcolor: "#f5f5f5" }}>
     <Box
       sx={{ display: "flex", gap: 1, justifyContent: "space-between", mb: 2 }}
     >
       <Typography variant="h5">Products</Typography>
-      <Button variant="outlined">Add New Product</Button>
+      <Button variant="outlined" onClick={onAdd}>
+        Add New Product
+      </Button>
     </Box>
     <Grid container spacing={2} alignItems="space-between">
       {products.map((productData) => (

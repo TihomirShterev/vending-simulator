@@ -5,11 +5,13 @@ import InventoryManager from "./components/InventoryManager/InventoryManager";
 import { formatMoney } from "./utils/helpers";
 import { fetchProducts } from "./services/api";
 import { IProduct } from "./types/types";
+import Form from "./components/Form/Form";
 
 const App = () => {
   const [balance, setBalance] = useState(0);
   const [message, setMessage] = useState("");
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchProducts().then(setProducts);
@@ -44,11 +46,19 @@ const App = () => {
     }
   };
 
+  const add = () => {
+    setIsModalOpen(true);
+  };
+
+  const save = (product: IProduct) => {
+    setProducts((prev) => [product, ...prev]);
+  };
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, sm: 8, lg: 9 }}>
-          <InventoryManager products={products} onBuy={buy} />
+          <InventoryManager products={products} onBuy={buy} onAdd={add} />
         </Grid>
         <Grid size={{ xs: 12, sm: 4, lg: 3 }}>
           <PaymentSystem
@@ -59,6 +69,11 @@ const App = () => {
           />
         </Grid>
       </Grid>
+      <Form
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={save}
+      />
     </Container>
   );
 };
