@@ -26,7 +26,7 @@ const Product = ({
       <Button
         variant="contained"
         disabled={quantity === 0}
-        onClick={() => onBuy({ id, name, price })}
+        onClick={() => onBuy({ id, name, price, quantity })}
       >
         Buy
       </Button>

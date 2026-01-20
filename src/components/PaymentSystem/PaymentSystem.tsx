@@ -9,7 +9,7 @@ const PaymentSystem = ({
   message,
   onReturnCoins,
 }: PaymentSystemProps) => (
-  <Paper sx={{ p: 3, textAlign: "center", height: "100%" }}>
+  <Paper sx={{ p: 3, textAlign: "center" }}>
     <Typography variant="h5">Balance: {formatMoney(balance)}</Typography>
     <Divider sx={{ my: 2 }} />
     <Typography variant="subtitle2" gutterBottom>
@@ -40,12 +40,11 @@ const PaymentSystem = ({
       color="warning"
       onClick={onReturnCoins}
       disabled={balance === 0}
-      sx={{ mb: 2 }}
     >
       Cancel & Return Coins
     </Button>
     {message && (
-      <Alert severity="info" sx={{ mt: 2 }}>
+      <Alert severity="info" sx={{ mt: 3 }}>
         {message}
       </Alert>
     )}

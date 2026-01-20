@@ -25,7 +25,7 @@ const App = () => {
     setMessage(`Returned: ${formatMoney(balance)}.`);
   };
 
-  const buy = ({ id, name, price }: Omit<IProduct, "quantity">) => {
+  const buy = ({ id, name, price }: IProduct) => {
     if (balance < price) {
       setMessage("Insufficient funds!");
     } else {
