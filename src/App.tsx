@@ -12,6 +12,7 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [products, setProducts] = useState<IProduct[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<IProduct | null>(null);
 
   useEffect(() => {
     fetchProducts().then(setProducts);
@@ -48,17 +49,34 @@ const App = () => {
 
   const add = () => {
     setIsModalOpen(true);
+    setEditingProduct(null);
+  };
+
+  const edit = (product: IProduct) => {
+    setIsModalOpen(true);
+    setEditingProduct(product);
   };
 
   const save = (product: IProduct) => {
-    setProducts((prev) => [product, ...prev]);
+    if (editingProduct) {
+      setProducts((prev) =>
+        prev.map((p) => (p.id === product.id ? product : p))
+      );
+    } else {
+      setProducts((prev) => [product, ...prev]);
+    }
   };
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, sm: 8, lg: 9 }}>
-          <InventoryManager products={products} onBuy={buy} onAdd={add} />
+          <InventoryManager
+            products={products}
+            onBuy={buy}
+            onAdd={add}
+            onEdit={edit}
+          />
         </Grid>
         <Grid size={{ xs: 12, sm: 4, lg: 3 }}>
           <PaymentSystem
@@ -73,6 +91,7 @@ const App = () => {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={save}
+        prefilledData={editingProduct}
       />
     </Container>
   );

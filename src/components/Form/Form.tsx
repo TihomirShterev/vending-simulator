@@ -13,21 +13,30 @@ import { IProduct } from "../../types/types";
 import { FormProps } from "./Form.types";
 import { FORM_DATA } from "./Form.data";
 
-const Form = ({ open, onClose, onSave }: FormProps) => {
+const Form = ({ open, onClose, onSave, prefilledData }: FormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<IProduct>();
 
+  const isEditMode = !!prefilledData;
+
   useEffect(() => {
-    reset();
-  }, [reset, open]);
+    if (isEditMode) {
+      Object.entries(prefilledData).forEach(([key, value]) => {
+        setValue(key as keyof IProduct, value);
+      });
+    } else {
+      reset();
+    }
+  }, [isEditMode, prefilledData, setValue, reset, open]);
 
   const onSubmit = ({ name, price, quantity }: IProduct) => {
     onSave({
-      id: Date.now(),
+      id: prefilledData?.id || Date.now(),
       name,
       price: Number(price),
       quantity: Number(quantity),
@@ -39,7 +48,9 @@ const Form = ({ open, onClose, onSave }: FormProps) => {
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle sx={{ pb: 0 }}>Add New Product</DialogTitle>
+        <DialogTitle sx={{ pb: 0 }}>
+          {isEditMode ? "Edit" : "Add New"} Product
+        </DialogTitle>
         <DialogContent>
           <Stack spacing={3} sx={{ mt: 2 }}>
             {FORM_DATA.map(({ name, label, validate }) => {
@@ -67,7 +78,7 @@ const Form = ({ open, onClose, onSave }: FormProps) => {
             Cancel
           </Button>
           <Button type="submit" variant="contained">
-            Add Product
+            {isEditMode ? "Save Changes" : "Add Product"}
           </Button>
         </DialogActions>
       </form>

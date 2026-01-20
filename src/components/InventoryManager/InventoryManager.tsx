@@ -6,6 +6,7 @@ const InventoryManager = ({
   products,
   onBuy,
   onAdd,
+  onEdit,
 }: InventoryManagerProps) => (
   <Paper sx={{ p: 3, bgcolor: "#f5f5f5" }}>
     <Box
@@ -19,7 +20,7 @@ const InventoryManager = ({
     <Grid container spacing={2} alignItems="space-between">
       {products.map((productData) => (
         <Grid key={productData.id} size={{ xs: 6, md: 4, lg: 3 }}>
-          <Product data={productData} onBuy={onBuy} />
+          <Product data={productData} onBuy={onBuy} onEdit={onEdit} />
         </Grid>
       ))}
     </Grid>
