@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import RemoveIcon from "@mui/icons-material/DeleteOutline";
 import { formatMoney } from "../../../utils/helpers";
 import { ProductProps } from "./Product.types";
 
@@ -14,6 +15,7 @@ const Product = ({
   data: { id, name, price, quantity },
   onBuy,
   onEdit,
+  onRemove,
 }: ProductProps) => (
   <Card sx={{ p: 1 }}>
     <CardActions
@@ -25,6 +27,13 @@ const Product = ({
         aria-label={`Edit ${name}`}
       >
         <EditIcon fontSize="small" />
+      </IconButton>
+      <IconButton
+        size="small"
+        onClick={() => onRemove(id)}
+        aria-label={`Delete ${name}`}
+      >
+        <RemoveIcon fontSize="small" color="error" />
       </IconButton>
     </CardActions>
     <CardContent sx={{ textAlign: "center", py: 0 }}>

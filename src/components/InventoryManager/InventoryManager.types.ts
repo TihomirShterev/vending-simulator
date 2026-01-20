@@ -5,4 +5,5 @@ export interface InventoryManagerProps {
   onBuy: (product: IProduct) => void;
   onAdd: () => void;
   onEdit: (product: IProduct) => void;
+  onRemove: (id: number) => void;
 }

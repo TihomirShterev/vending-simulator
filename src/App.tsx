@@ -67,6 +67,10 @@ const App = () => {
     }
   };
 
+  const remove = (id: number) => {
+    setProducts(products.filter((p) => p.id !== id));
+  };
+
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Grid container spacing={4}>
@@ -76,6 +80,7 @@ const App = () => {
             onBuy={buy}
             onAdd={add}
             onEdit={edit}
+            onRemove={remove}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 4, lg: 3 }}>
