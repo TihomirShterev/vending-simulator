@@ -1,6 +1,6 @@
 # Vending Machine
 
-A responsive vending machine simulator built with React 18, TypeScript, and Material UI.
+A responsive vending machine simulator built with React 18, TypeScript, Zustand, and Material UI.
 
 ## Features
 
@@ -23,5 +23,5 @@ A responsive vending machine simulator built with React 18, TypeScript, and Mate
 1. **Purchase**: Insert €2.00, click "Buy" on Juice (€1.60). Balance resets to 0, and the message shows "Change: €0.40".
 2. **Cancel**: Insert €0.80 and click "Cancel & Return Coins" to see the balance reset and coins returned.
 3. **Add**: Click "Add New Product" to open a form to add product's name, price, and quantity.
-3. **Edit**: Click on product's "pencil" icon to open a form to edit its prop values.
-3. **Remove**: Click on a product's "garbage can" icon to remove it from the inventory.
+4. **Edit**: Click on product's "pencil" icon to open a form to edit its prop values.
+5. **Remove**: Click on a product's "garbage can" icon to remove it from the inventory.
