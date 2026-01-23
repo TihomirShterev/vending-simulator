@@ -1,7 +1,7 @@
 import { create } from "zustand";
+import { IProduct } from "@/types/types";
 import { fetchProducts } from "../services/api";
 import { formatMoney } from "../utils/helpers";
-import { IProduct } from "../types/types";
 
 interface VendingState {
   // State

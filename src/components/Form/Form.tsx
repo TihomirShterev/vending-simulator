@@ -9,8 +9,8 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { IProduct } from "@/types/types";
 import { useVendingStore } from "../../store/vendingStore";
-import { IProduct } from "../../types/types";
 
 interface Field {
   name: "name" | "price" | "quantity";
