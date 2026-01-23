@@ -1,4 +1,5 @@
-import { LOCALE, CURRENCY } from "./constants";
+const CURRENCY = "EUR"; // €
+const LOCALE = "de-DE"; // Germany
 
 export const formatMoney = (amount: number) =>
   new Intl.NumberFormat(LOCALE, {

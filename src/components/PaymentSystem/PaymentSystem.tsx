@@ -1,7 +1,8 @@
 import { Alert, Box, Button, Divider, Paper, Typography } from "@mui/material";
 import { useVendingStore } from "../../store/vendingStore";
 import { formatMoney } from "../../utils/helpers";
-import { ACCEPTED_COINS } from "./PaymentSystem.data";
+
+const ACCEPTED_COINS = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2] as const;
 
 const PaymentSystem = () => {
   const balance = useVendingStore((state) => state.balance);

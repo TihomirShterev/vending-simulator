@@ -1,9 +1,5 @@
 import { IProduct } from "../types/types";
 
-export const MIN_COIN = 0.01;
-export const CURRENCY = "EUR"; // €
-export const LOCALE = "de-DE"; // Germany
-
 export const MOCK_PRODUCTS: IProduct[] = [
   { id: 1, name: "Juice", price: 1.6, quantity: 10 },
   { id: 2, name: "Water", price: 0.8, quantity: 15 },
