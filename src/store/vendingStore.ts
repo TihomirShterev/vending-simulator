@@ -7,6 +7,7 @@ interface VendingState {
   // State
   balance: number;
   message: string;
+  isLoading: boolean;
   products: IProduct[];
   isModalOpen: boolean;
   editingProduct: IProduct | null;
@@ -24,6 +25,7 @@ interface VendingState {
 export const useVendingStore = create<VendingState>((set, get) => ({
   balance: 0,
   message: "",
+  isLoading: false,
   products: [],
   isModalOpen: false,
   editingProduct: null,
@@ -60,8 +62,14 @@ export const useVendingStore = create<VendingState>((set, get) => ({
   },
   // CRUD
   loadProducts: async () => {
-    const products = await fetchProducts();
-    set({ products });
+    set({ isLoading: true });
+
+    try {
+      const products = await fetchProducts();
+      set({ products });
+    } finally {
+      set({ isLoading: false }); // regardless of success/fail
+    }
   },
   removeProduct: (id) =>
     set((state) => ({
