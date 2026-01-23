@@ -9,11 +9,16 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { useVendingStore } from "../../store/vendingStore";
 import { IProduct } from "../../types/types";
-import { FormProps } from "./Form.types";
 import { FORM_DATA } from "./Form.data";
 
-const Form = ({ open, onClose, onSave, prefilledData }: FormProps) => {
+const Form = () => {
+  const isModalOpen = useVendingStore((state) => state.isModalOpen);
+  const closeModal = useVendingStore((state) => state.closeModal);
+  const editingProduct = useVendingStore((state) => state.editingProduct);
+  const saveProduct = useVendingStore((state) => state.saveProduct);
+
   const {
     register,
     handleSubmit,
@@ -22,31 +27,24 @@ const Form = ({ open, onClose, onSave, prefilledData }: FormProps) => {
     setValue,
   } = useForm<IProduct>();
 
-  const isEditMode = !!prefilledData;
+  const isEditMode = !!editingProduct;
 
   useEffect(() => {
     if (isEditMode) {
-      Object.entries(prefilledData).forEach(([key, value]) => {
+      Object.entries(editingProduct).forEach(([key, value]) => {
         setValue(key as keyof IProduct, value);
       });
     } else {
       reset();
     }
-  }, [isEditMode, prefilledData, setValue, reset, open]);
+  }, [isEditMode, editingProduct, setValue, reset]);
 
-  const onSubmit = ({ name, price, quantity }: IProduct) => {
-    onSave({
-      id: prefilledData?.id || Date.now(),
-      name,
-      price: Number(price),
-      quantity: Number(quantity),
-    });
-
-    onClose();
+  const onSubmit = (data: IProduct) => {
+    saveProduct(data);
   };
 
   return (
-    <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
+    <Dialog fullWidth maxWidth="xs" open={isModalOpen} onClose={closeModal}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle sx={{ pb: 0 }}>
           {isEditMode ? "Edit" : "Add New"} Product
@@ -74,7 +72,7 @@ const Form = ({ open, onClose, onSave, prefilledData }: FormProps) => {
           </Stack>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 3 }}>
-          <Button onClick={onClose} color="inherit">
+          <Button onClick={closeModal} color="inherit">
             Cancel
           </Button>
           <Button type="submit" variant="contained">
