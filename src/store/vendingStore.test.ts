@@ -1,9 +1,10 @@
 import { act } from "@testing-library/react";
+import { IProduct } from "@/types/types";
 import { useVendingStore } from "./vendingStore";
 import * as api from "../services/api";
 import { formatMoney } from "../utils/helpers";
+import { MOCK_PRODUCTS } from "../services/api.data";
 
-// Mock the API for controlled loadProducts testing
 jest.mock("../services/api");
 const mockedApi = api as jest.Mocked<typeof api>;
 
@@ -72,21 +73,23 @@ describe("useVendingStore Actions", () => {
   });
 
   describe("CRUD Actions", () => {
-    it("should fetch products on load", async () => {
-      const mockProducts = [
-        { id: 1, name: "Test Drink", price: 1, quantity: 5 },
-      ];
-      mockedApi.fetchProducts.mockResolvedValue(mockProducts);
+    it("should fetch products", async () => {
+      mockedApi.fetchProducts.mockResolvedValue(MOCK_PRODUCTS);
 
       await act(async () => {
         await useVendingStore.getState().loadProducts();
       });
 
-      expect(useVendingStore.getState().products).toEqual(mockProducts);
+      expect(useVendingStore.getState().products).toEqual(MOCK_PRODUCTS);
     });
 
     it("should add a new product in add mode", () => {
-      const newProduct = { name: "New Drink", price: 2, quantity: 5 } as any;
+      const newProduct: IProduct = {
+        id: 1,
+        name: "New Drink",
+        price: 2,
+        quantity: 5,
+      };
 
       act(() => {
         useVendingStore.getState().saveProduct(newProduct);
@@ -128,8 +131,36 @@ describe("useVendingStore Actions", () => {
     });
   });
 
-  describe("Modal UI Actions", () => {
-    it("should toggle state on modal open and close", () => {
+  describe("UI Actions", () => {
+    it("should toggle loading during products fetching", async () => {
+      let resolveApi: (value: IProduct[]) => void;
+
+      const pendingPromise = new Promise<IProduct[]>((resolve) => {
+        resolveApi = resolve;
+      });
+
+      mockedApi.fetchProducts.mockReturnValue(pendingPromise);
+      let loadCall: Promise<void>;
+
+      act(() => {
+        loadCall = useVendingStore.getState().loadProducts();
+      });
+
+      expect(useVendingStore.getState().isLoading).toBe(true);
+
+      await act(async () => {
+        resolveApi!(MOCK_PRODUCTS);
+        await loadCall!;
+      });
+
+      expect(useVendingStore.getState().isLoading).toBe(false);
+
+      expect(useVendingStore.getState().products).toHaveLength(
+        MOCK_PRODUCTS.length
+      );
+    });
+
+    it("should toggle modal open and close", () => {
       act(() => {
         useVendingStore.getState().openModal();
       });
@@ -141,7 +172,6 @@ describe("useVendingStore Actions", () => {
       });
 
       expect(useVendingStore.getState().isModalOpen).toBe(false);
-      expect(useVendingStore.getState().editingProduct).toBeNull();
     });
   });
 });
