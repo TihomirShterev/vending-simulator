@@ -2,49 +2,25 @@ import { useEffect, useState } from "react";
 import { Container, Grid } from "@mui/material";
 import PaymentSystem from "./components/PaymentSystem/PaymentSystem";
 import InventoryManager from "./components/InventoryManager/InventoryManager";
-import { formatMoney } from "./utils/helpers";
-import { fetchProducts } from "./services/api";
-import { IProduct } from "./types/types";
 import Form from "./components/Form/Form";
+import { IProduct } from "./types/types";
+import { usePayment } from "./hooks/usePayment";
+import { fetchProducts } from "./services/api";
 
 const App = () => {
-  const [balance, setBalance] = useState(0);
-  const [message, setMessage] = useState("");
   const [products, setProducts] = useState<IProduct[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<IProduct | null>(null);
+  const { balance, message, insertCoin, returnCoins, buy } = usePayment();
 
   useEffect(() => {
     fetchProducts().then(setProducts);
   }, []);
 
-  const insertCoin = (coin: number) => {
-    setBalance((prev) => prev + coin);
-    setMessage(`Inserted ${formatMoney(coin)}.`);
-  };
-
-  const returnCoins = () => {
-    setBalance(0);
-    setMessage(`Returned: ${formatMoney(balance)}.`);
-  };
-
-  const buy = ({ id, name, price }: IProduct) => {
-    if (balance < price) {
-      setMessage("Insufficient funds!");
-    } else {
-      setProducts((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, quantity: p.quantity - 1 } : p))
-      );
-
-      const change = balance - price;
-      setBalance(0);
-
-      setMessage(
-        `Purchased "${name}".${
-          change ? ` Change: ${formatMoney(change)}.` : ""
-        }`
-      );
-    }
+  const decQty = (id: number) => {
+    setProducts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, quantity: p.quantity - 1 } : p))
+    );
   };
 
   const add = () => {
@@ -77,7 +53,7 @@ const App = () => {
         <Grid size={{ xs: 12, sm: 8, lg: 9 }}>
           <InventoryManager
             products={products}
-            onBuy={buy}
+            onBuy={(p) => buy(p, decQty)}
             onAdd={add}
             onEdit={edit}
             onRemove={remove}
