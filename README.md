@@ -14,7 +14,7 @@ A responsive vending machine simulator built with React 18, TypeScript, Zustand,
 
 ## Scripts
 
-- `npm install` or `yarn`: Installs dependecies.
+- `npm install` or `yarn`: Installs dependencies.
 - `npm start` or `yarn start`: Runs the app in development mode.
 - `npm test` or `yarn test`: Launches the test runner.
 
