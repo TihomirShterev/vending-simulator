@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Container, Grid } from "@mui/material";
 import PaymentSystem from "./components/PaymentSystem/PaymentSystem";
 import InventoryManager from "./components/InventoryManager/InventoryManager";
-import Form from "./components/Form/Form";
+import ProductForm from "./components/ProductForm/ProductForm";
 import { useVendingStore } from "./store/vendingStore";
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
           <PaymentSystem />
         </Grid>
       </Grid>
-      <Form />
+      <ProductForm />
     </Container>
   );
 };

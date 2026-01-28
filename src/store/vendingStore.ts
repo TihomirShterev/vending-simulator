@@ -10,7 +10,7 @@ interface VendingState {
   isLoading: boolean;
   products: IProduct[];
   isModalOpen: boolean;
-  editingProduct: IProduct | null;
+  productInEditMode: IProduct | null;
   // Actions
   insertCoin: (coin: number) => void;
   returnCoins: () => void;
@@ -28,7 +28,7 @@ export const useVendingStore = create<VendingState>((set, get) => ({
   isLoading: false,
   products: [],
   isModalOpen: false,
-  editingProduct: null,
+  productInEditMode: null,
   // Vending
   insertCoin: (coin) => {
     set((state) => ({
@@ -76,11 +76,11 @@ export const useVendingStore = create<VendingState>((set, get) => ({
       products: state.products.filter((p) => p.id !== id),
     })),
   openModal: (product) =>
-    set({ isModalOpen: true, editingProduct: product || null }),
-  closeModal: () => set({ isModalOpen: false, editingProduct: null }),
+    set({ isModalOpen: true, productInEditMode: product || null }),
+  closeModal: () => set({ isModalOpen: false, productInEditMode: null }),
   saveProduct: (data) =>
     set((state) => {
-      const isEditMode = !!state.editingProduct;
+      const isEditMode = !!state.productInEditMode;
 
       return {
         products: isEditMode

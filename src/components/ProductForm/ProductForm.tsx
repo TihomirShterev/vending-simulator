@@ -46,10 +46,10 @@ const FORM_DATA: Field[] = [
   },
 ];
 
-const Form = () => {
+const ProductForm = () => {
   const isModalOpen = useVendingStore((state) => state.isModalOpen);
   const closeModal = useVendingStore((state) => state.closeModal);
-  const editingProduct = useVendingStore((state) => state.editingProduct);
+  const productInEditMode = useVendingStore((state) => state.productInEditMode);
   const saveProduct = useVendingStore((state) => state.saveProduct);
 
   const {
@@ -60,17 +60,17 @@ const Form = () => {
     setValue,
   } = useForm<IProduct>();
 
-  const isEditMode = !!editingProduct;
+  const isEditMode = !!productInEditMode;
 
   useEffect(() => {
     if (isEditMode) {
-      Object.entries(editingProduct).forEach(([key, value]) => {
+      Object.entries(productInEditMode).forEach(([key, value]) => {
         setValue(key as keyof IProduct, value);
       });
     } else {
       reset();
     }
-  }, [isEditMode, editingProduct, setValue, reset]);
+  }, [isEditMode, productInEditMode, setValue, reset]);
 
   const onSubmit = (data: IProduct) => {
     saveProduct(data);
@@ -117,4 +117,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ProductForm;
