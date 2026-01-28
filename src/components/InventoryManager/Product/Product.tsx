@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/DeleteOutline";
-import { IProduct } from "@/types/types";
+import { IProduct } from "../../../types/types";
 import { useVendingStore } from "../../../store/vendingStore";
 import { formatMoney } from "../../../utils/helpers";
 

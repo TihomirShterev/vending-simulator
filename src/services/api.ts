@@ -1,4 +1,4 @@
-import { IProduct } from "@/types/types";
+import { IProduct } from "../types/types";
 import { MOCK_PRODUCTS } from "./api.data";
 
 export const fetchProducts = (): Promise<IProduct[]> =>
